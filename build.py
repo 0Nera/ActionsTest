@@ -1,7 +1,9 @@
 import os, shutil, sys, tarfile, time
 
-
-CC = "i686-elf-gcc -g -w -ffreestanding -I kernel/include/ -c"
+if sys.platform == "linux" or sys.platform == "linux2":
+    CC = "gcc -g -w -ffreestanding -I kernel/include/ -c"
+else:
+    CC = "i686-elf-gcc -g -w -ffreestanding -I kernel/include/ -c"
 
 
 def build_kernel():
