@@ -1,16 +1,16 @@
-name: SynapseOS Buildbot
+name: Buildbot
 
 # Контроль событий при которых будет сборка
 on:
-  # В нашем случае это push в ветку master
+  # В нашем случае это push в ветку main
   push:
     tags:
         - "v*"
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
     tags:
         - "v*"
-    branches: [ "master" ]
+    branches: [ "main" ]
   # Позволяет запускать этот рабочий процесс вручную на вкладке Actions
   workflow_dispatch:
 
