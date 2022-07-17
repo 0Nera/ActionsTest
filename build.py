@@ -39,7 +39,7 @@ def build_kernel():
     
     for i in bins:
         OBJ += f"bin/kernel/{i} "
-    print(OBJ)
+    print(f"OBJ={OBJ}")
     if sys.platform == "linux" or sys.platform == "linux2":
         os.system("gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
     else:
@@ -133,6 +133,7 @@ if __name__ == "__main__":
                 elif sys.argv[i] == "run":
                     run_qemu()
                 elif sys.argv[i] == "autobuild":
+                    print("***************AUTOBUILD***************************")
                     build_kernel()
                     build_apps()
                     create_iso_l()
