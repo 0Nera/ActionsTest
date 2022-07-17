@@ -59,13 +59,33 @@ def build_apps():
 
 
 def create_iso():
-    print("Creating ISO")
+    print("Creating ISO with grub")
     start_time = time.time()
 
     if sys.platform == "linux" or sys.platform == "linux2":
         os.system("grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS")
     else:
         os.system("ubuntu run grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS ")
+    
+    print(f"Build end at: {time.time() - start_time}")
+
+
+def create_iso_l():
+    print("Creating ISO with limine")
+    start_time = time.time()
+
+    os.system("git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1")
+    os.system("make -C limine")
+    os.system("mkdir -p iso_root")
+    os.system("""cp -v isodir/boot/kernel.elf limine.cfg limine/limine.sys \
+        limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+    """)
+    os.system("""xorriso -as mkisofs -b limine-cd.bin \
+          -no-emul-boot -boot-load-size 4 -boot-info-table \
+          --efi-boot limine-cd-efi.bin \
+          -efi-boot-part --efi-boot-image --protective-msdos-label \
+          iso_root -o SynapseOS.iso""")
+    os.system("./limine/limine-deploy SynapseOS.iso")
     
     print(f"Build end at: {time.time() - start_time}")
 
@@ -106,6 +126,10 @@ if __name__ == "__main__":
                     create_iso()
                 elif sys.argv[i] == "run":
                     run_qemu()
+                elif sys.argv[i] == "autobuild":
+                    build_kernel()
+                    build_apps()
+                    create_iso_l()
                 else:
                     print(f"Ошибка, неизвестный аргумент: {sys.argv[i]}")
         print(f"Конец: {time.time() - start_time}")
