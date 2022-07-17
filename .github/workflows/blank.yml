@@ -55,6 +55,8 @@ jobs:
           python3 build.py kernel apps iso
           ls -l
           ls -l  isodir/boot/
+          ls -l  bin/
+          ls -l  bin/kernel/
           make -C limine
           mkdir -p iso_root
           cp -v isodir/bootkernel.elf limine.cfg limine/limine.sys \
