@@ -40,7 +40,10 @@ def build_kernel():
     for i in bins:
         OBJ += f"bin/kernel/{i} "
     print(OBJ)
-    os.system("i686-elf-gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
+    if sys.platform == "linux" or sys.platform == "linux2":
+        os.system("gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
+    else:
+        os.system("i686-elf-gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
     print(f"Build end at: {time.time() - start_time}")
 
 
