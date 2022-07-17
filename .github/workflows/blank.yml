@@ -33,7 +33,7 @@ jobs:
       - name: Download i686-elf-tools
         run: |
           wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
-          sudo unzip i686-elf-tools-linux.zip -d /usr/local
+          sudo unzip -q i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
           
       # Запуск сборки
