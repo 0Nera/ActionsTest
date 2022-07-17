@@ -3,7 +3,7 @@ import os, shutil, sys, tarfile, time
 if sys.platform == "linux" or sys.platform == "linux2":
     CC = "gcc -g -w -ffreestanding -I kernel/include/ -c"
 else:
-    CC = "i686-elf-gcc -g -w -ffreestanding -I kernel/include/ -c"
+    CC = "gcc -g -w -ffreestanding -I kernel/include/ -c"
 
 
 def build_kernel():
@@ -43,7 +43,7 @@ def build_kernel():
     if sys.platform == "linux" or sys.platform == "linux2":
         os.system("gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
     else:
-        os.system("i686-elf-gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
+        os.system("gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
     print(f"Build end at: {time.time() - start_time}")
 
 
