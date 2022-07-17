@@ -1,0 +1,59 @@
+name: SynapseOS Buildbot
+
+# Контроль событий при которых будет сборка
+on:
+  # В нашем случае это push в ветку master
+  push:
+    tags:
+        - "v*"
+    branches: [ "master" ]
+  pull_request:
+    tags:
+        - "v*"
+    branches: [ "master" ]
+  # Позволяет запускать этот рабочий процесс вручную на вкладке Actions
+  workflow_dispatch:
+
+# Выполнение рабочего процесса состоит из одного или нескольких заданий, которые могут выполняться последовательно или параллельно
+jobs:
+  build:
+    #  Все будет работать на последней версии Ubuntu
+    runs-on: ubuntu-latest
+
+    # Шаги представляют собой последовательность задач, которые будут выполняться как часть задания
+    steps:
+      - uses: actions/checkout@v3
+
+      # Установка зависимостей
+      - name: Install python3, grub-pc-bin, xorriso, mtools, git
+        run: sudo apt install python3 grub-pc-bin xorriso mtools
+
+      # Установка SynapseOS
+      - name: Install SynapseOS
+        run: git clone --depth 1 https://github.com/0Nera/SynapseOS.git & cd SynapseOS/
+
+      # Скачивание и установка i686-elf-tools
+      - name: Download i686-elf-tools
+        run: |
+          wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
+          sudo unzip i686-elf-tools-linux.zip -d /usr/local
+          rm i686-elf-tools-linux.zip
+          
+      # Запуск сборки
+      - name: Run build
+        run: python3 build.py kernel iso
+
+      # Публикация релиза
+      - name: Publish
+        run: |
+          echo "done!"
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Autobuild"
+          files: |
+            LICENSE
+            SynapseOS.iso
