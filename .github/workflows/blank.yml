@@ -24,9 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Установка зависимостей
+      # Установка зависимостей qemu-system-x86 
       - name: Install python3, grub-pc-bin, xorriso, mtools, git
-        run: sudo apt install python3 grub-pc-bin xorriso mtools qemu-system-x86 
+        run: sudo apt install python3 grub-pc-bin xorriso mtools 
 
 
       # Скачивание и установка i686-elf-tools
@@ -36,16 +36,9 @@ jobs:
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
           
-      # Скачивание и установка i686-elf-tools
-      - name: Install limine
-        run: |
-          cd SynapseOS/
-          git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
-          
       # Запуск сборки
       - name: Run build
         run: |
-          cd SynapseOS/
           python3 build.py autobuild
           ls -l
           ls -l  isodir/boot/
