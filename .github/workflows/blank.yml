@@ -52,7 +52,7 @@ jobs:
       - name: Run build
         run: |
           cd SynapseOS/
-          python3 build.py kernel
+          python3 build.py kernel apps iso
           ls -l
           ls -l  isodir/boot/
           make -C limine
