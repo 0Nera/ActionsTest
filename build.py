@@ -135,8 +135,8 @@ if __name__ == "__main__":
                 elif sys.argv[i] == "autobuild":
                     print("***************AUTOBUILD***************************")
                     build_kernel()
-                    build_apps()
-                    create_iso_l()
+                    #build_apps()
+                    #create_iso_l()
                 else:
                     print(f"Ошибка, неизвестный аргумент: {sys.argv[i]}")
         print(f"Конец: {time.time() - start_time}")
