@@ -30,7 +30,10 @@ jobs:
 
       # Установка SynapseOS
       - name: Install SynapseOS
-        run: git clone --depth 1 https://github.com/0Nera/SynapseOS.git & cd SynapseOS/
+        run: |
+          git clone --depth 1 https://github.com/0Nera/SynapseOS.git
+          ls
+          cd SynapseOS/
 
       # Скачивание и установка i686-elf-tools
       - name: Download i686-elf-tools
