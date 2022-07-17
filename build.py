@@ -10,7 +10,8 @@ def build_kernel():
 
     SRC_TARGETS = []
     BIN_TARGETS = []
-
+    print(os.walk("kernel\\"))
+    
     for path, directories, files in os.walk("kernel\\"):
         for i in files:
             if i.endswith('.c'):
