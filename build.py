@@ -9,6 +9,7 @@ else:
 def build_kernel():
     start_time = time.time()
     print("Building kernel")
+    print(os.system("pwd"))
 
     SRC_TARGETS = []
     BIN_TARGETS = []
