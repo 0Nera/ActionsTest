@@ -42,11 +42,29 @@ jobs:
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
           
+      # Скачивание и установка i686-elf-tools
+      - name: Install limine
+        run: |
+          cd SynapseOS/
+          git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+          
       # Запуск сборки
       - name: Run build
         run: |
           cd SynapseOS/
-          python3 build.py kernel iso
+          python3 build.py kernel
+          make -C limine
+          mkdir -p iso_root
+          cp -v isodir/bootkernel.elf limine.cfg limine/limine.sys \
+                limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+
+          xorriso -as mkisofs -b limine-cd.bin \
+                  -no-emul-boot -boot-load-size 4 -boot-info-table \
+                  --efi-boot limine-cd-efi.bin \
+                  -efi-boot-part --efi-boot-image --protective-msdos-label \
+                  iso_root -o SynapseOS.iso
+
+          ./limine/limine-deploy SynapseOS.iso
 
       # Публикация релиза
       - name: Publish
