@@ -1,19 +1,16 @@
 import os, shutil, sys, tarfile, time
 
-if sys.platform == "linux" or sys.platform == "linux2":
-    CC = "gcc -g -w -ffreestanding -I kernel/include/ -c"
-else:
-    CC = "gcc -g -w -ffreestanding -I kernel/include/ -c"
+
+CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -std=gnu99 -ffreestanding -I kernel/include/ -c"
 
 
 def build_kernel():
     start_time = time.time()
+
     print("Building kernel")
-    print(os.system("pwd"))
 
     SRC_TARGETS = []
     BIN_TARGETS = []
-    print(os.walk("kernel\\"))
     
     for path, directories, files in os.walk("kernel\\"):
         for i in files:
@@ -41,10 +38,8 @@ def build_kernel():
     for i in bins:
         OBJ += f"bin/kernel/{i} "
     print(f"OBJ={OBJ}")
-    if sys.platform == "linux" or sys.platform == "linux2":
-        os.system("gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
-    else:
-        os.system("gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
+
+    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + OBJ)
     print(f"Build end at: {time.time() - start_time}")
 
 
