@@ -12,6 +12,7 @@ uint32_t RTL8139_raw_mac[2];
 uint8_t TSAD_array[4] = {0x20, 0x24, 0x28, 0x2C};
 uint8_t TSD_array[4] = {0x10, 0x14, 0x18, 0x1C};
 
+void RTL8139_reset();
 
 // Получение MAC адреса
 void RTL8139_read_mac_addr() {
